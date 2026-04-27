@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Jovida · Actions</title>
+<style>
+:root{
+  --bg:#f4f0ea;
+  --surface:#fffdf8;
+  --card:#ffffff;
+  --ink:#221f1c;
+  --muted:#7b736d;
+  --soft:#aaa29a;
+  --line:#e8dfd4;
+  --green:#83d843;
+  --green-dark:#45a312;
+  --orange:#ff7a45;
+  --purple:#7866d8;
+  --pink:#dc7d97;
+  --blue:#4f8fc8;
+  --shadow:0 10px 30px rgba(60,45,30,.10);
+  --shadow-soft:0 4px 14px rgba(60,45,30,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#e9e1d7}
+body{
+  display:flex;justify-content:center;align-items:flex-start;
+  background:
+    radial-gradient(900px 520px at 8% 0%,#f5d6c0 0%,transparent 58%),
+    radial-gradient(900px 520px at 100% 8%,#d9e5ef 0%,transparent 56%),
+    #e9e1d7;
+}
+button,input,textarea{font:inherit}
+button{border:0;cursor:pointer}
+.phone{width:100%;max-width:430px;min-height:100vh;background:var(--bg);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+@media(min-width:640px){
+  body{align-items:center}
+  .phone{margin:28px 0;border:10px solid #171514;border-radius:42px;min-height:900px;max-height:900px}
+}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:30px;opacity:0;pointer-events:none;transform:translateX(16px);transition:.24s ease;-webkit-overflow-scrolling:touch}
+.screen.active{opacity:1;pointer-events:auto;transform:none}
+.screen::-webkit-scrollbar{display:none}
+.topbar{position:relative;z-index:1;padding:14px 16px 18px;background:
+  radial-gradient(120px 54px at 18% 16%,rgba(255,255,255,.9) 0%,rgba(255,255,255,.55) 46%,transparent 72%),
+  radial-gradient(160px 70px at 78% 24%,rgba(255,255,255,.78) 0%,rgba(255,255,255,.42) 50%,transparent 76%),
+  linear-gradient(180deg,#91dcff 0%,#bdeeff 62%,#e8f8ff 100%);
+  backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.48);box-shadow:0 12px 26px rgba(70,135,165,.12)}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.profile{display:flex;align-items:center;gap:10px;min-width:0}
+.profile img{width:38px;height:38px;border-radius:50%;background:#fff5dc;box-shadow:var(--shadow-soft)}
+.hello{font-weight:800;font-size:14px;line-height:1.1}
+.date{margin-top:3px;color:rgba(45,67,78,.68);font-size:11px}
+.metrics{display:flex;gap:8px;align-items:center}
+.pill{height:32px;border-radius:999px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;gap:5px;padding:0 10px;font-size:12px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.pill.fire{background:#fff0df;color:#c55215}
+.jar-btn{padding-left:6px}
+.mini-jar{width:22px;height:24px;display:block}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 0 0}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;height:34px;padding:0 13px;border-radius:999px;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.7);color:#658091;font-size:12px;font-weight:800;white-space:nowrap}
+.tab.active{background:#111;color:#fff;border-color:#111}
+.sky-title{display:none}
+.sky-title h1{margin:0;font-size:25px;letter-spacing:0;line-height:1.1;color:#183449}
+.sky-title .scope{font-size:11px;color:rgba(36,63,80,.68);font-weight:800;white-space:nowrap}
+.sky-coach{margin-top:12px;display:flex;align-items:center;gap:8px}
+.sky-coach .speech{position:relative;flex:1;background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.88);border-radius:18px;padding:11px 12px;box-shadow:0 8px 24px rgba(56,118,150,.12)}
+.sky-coach .speech:after{content:"";position:absolute;right:-10px;bottom:18px;width:18px;height:18px;background:rgba(255,255,255,.78);border-right:1px solid rgba(255,255,255,.88);border-bottom:1px solid rgba(255,255,255,.88);transform:rotate(-45deg)}
+.sky-coach p{margin:0;font-size:12.5px;line-height:1.46;color:#476170}
+.sky-coach b{color:#183449}
+.sky-coach img{width:74px;height:74px;border-radius:50%;background:#fff5dc;filter:drop-shadow(0 8px 14px rgba(70,120,140,.16));position:relative;z-index:1}
+.hero{display:none;padding:14px 16px 4px}
+.headline{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.headline h1{margin:0;font-size:23px;letter-spacing:0;line-height:1.15}
+.headline .scope{font-size:11px;color:var(--soft);font-weight:700;white-space:nowrap}
+.coach{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;gap:10px;box-shadow:var(--shadow-soft)}
+.coach img{width:52px;height:52px;border-radius:50%;background:#fff5dc;flex:0 0 auto}
+.coach p{margin:0;font-size:12.5px;line-height:1.48;color:var(--muted)}
+.coach b{color:var(--ink)}
+.progress{margin-top:8px;height:6px;border-radius:999px;background:#eee6db;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--green),#ffc247);border-radius:inherit;width:0%;transition:width .35s ease}
+.section-title{padding:18px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.section-title h2{margin:0;font-size:16px;letter-spacing:0}
+.section-title p{margin:3px 0 0;color:var(--soft);font-size:11.5px;line-height:1.35}
+.section-title .side{font-size:11px;color:var(--muted);font-weight:800;background:#ebe4db;border-radius:999px;padding:5px 9px;white-space:nowrap}
+.main-action-wrap{padding:0 12px 9px}
+.main-action{position:relative;width:100%;border:1px solid rgba(255,255,255,.8);border-radius:22px;padding:16px 16px 15px;min-height:154px;background:linear-gradient(135deg,#fff8e6,#ffd996 78%,#ffc76c);box-shadow:0 16px 34px rgba(190,126,30,.22);overflow:hidden;text-align:left}
+.main-action:before{content:"";position:absolute;right:-42px;bottom:-54px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.42)}
+.main-action .main-kicker{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;font-weight:900;color:#70460d;text-transform:uppercase;letter-spacing:.4px}
+.main-action .main-title{position:relative;margin:13px 0 8px;font-size:20px;line-height:1.2;font-weight:950;color:#2f220f;max-width:270px}
+.main-action .main-meta{position:relative;display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#785b32;font-size:12px;font-weight:800}
+.main-action .main-cta{position:relative;margin-top:15px;display:inline-flex;align-items:center;gap:6px;background:#111;color:#fff;border-radius:999px;padding:10px 15px;font-weight:900;font-size:13px}
+.main-action .main-hero-icon{position:absolute;right:14px;bottom:12px;width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:31px;background:rgba(255,255,255,.58);box-shadow:0 8px 20px rgba(120,75,20,.13)}
+.main-action .main-hero-icon.read{color:#2e7fc5;background:rgba(235,246,255,.82)}
+.main-action .main-hero-icon.todo{color:#43a415;background:rgba(238,249,231,.86)}
+.main-action .main-hero-icon.coding-quiz{color:#b9780d;background:rgba(255,244,219,.88)}
+.main-action .main-hero-icon.tell{color:#6c58cd;background:rgba(244,236,255,.88)}
+.main-action.done{background:linear-gradient(135deg,#eef9e7,#d8efc7)}
+.main-action.done .main-title,
+.action-card.done .action-copy b{
+  color:#8f8881;
+  text-decoration:line-through;
+  text-decoration-thickness:2px;
+  text-decoration-color:rgba(35,31,28,.42);
+}
+.action-list{display:flex;flex-direction:column;gap:7px;padding:0 12px}
+.action-group{display:flex;flex-direction:column;gap:7px}
+.action-group + .action-group{margin-top:3px}
+.action-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 4px 0}
+.action-group-head .left{display:flex;align-items:center;gap:7px;min-width:0}
+.action-group-head .dot{width:7px;height:7px;border-radius:50%;background:#111;flex:0 0 auto}
+.action-group-head .dot.slim{background:#3f9a58}.action-group-head .dot.ai{background:#7866d8}.action-group-head .dot.skin{background:#dc7d97}.action-group-head .dot.english{background:#328cbf}.action-group-head .dot.manifest{background:#b68a2e}.action-group-head .dot.art{background:#a15cbd}.action-group-head .dot.sleep{background:#526b9c}.action-group-head .dot.travel{background:#3f927f}.action-group-head .dot.crush{background:#dd6a6a}
+.action-group-head b{font-size:11.5px;color:#776d65;line-height:1;white-space:nowrap}
+.action-group-head span{font-size:10.5px;color:#aaa19a;font-weight:800;white-space:nowrap}
+.action-cell{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow-soft)}
+.cell-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.goal-name{font-size:13.5px;font-weight:900}
+.goal-meta{font-size:11px;color:var(--soft);margin-top:3px}
+.goal-chip{font-size:10.5px;font-weight:900;border-radius:999px;padding:4px 8px;color:#fff;background:#111;white-space:nowrap}
+.goal-chip.slim{background:#3f9a58}.goal-chip.ai{background:#7866d8}.goal-chip.skin{background:#dc7d97}.goal-chip.english{background:#328cbf}.goal-chip.manifest{background:#b68a2e}.goal-chip.art{background:#a15cbd}.goal-chip.sleep{background:#526b9c}.goal-chip.travel{background:#3f927f}.goal-chip.crush{background:#dd6a6a}
+.action-card{display:flex;align-items:center;gap:10px;width:100%;padding:11px 10px;border-radius:15px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-soft);text-align:left;transition:.12s ease}
+.action-card:active{transform:scale(.985)}
+.action-card.done{background:#eef8e7;border-color:#d7e8ca}
+.mini-goal{display:inline-flex;align-items:center;height:19px;border-radius:999px;padding:0 7px;color:#fff;font-size:10px;font-weight:900;background:#111;flex:0 0 auto;font-style:normal}
+.mini-goal.slim{background:#3f9a58}.mini-goal.ai{background:#7866d8}.mini-goal.skin{background:#dc7d97}.mini-goal.english{background:#328cbf}.mini-goal.manifest{background:#b68a2e}.mini-goal.art{background:#a15cbd}.mini-goal.sleep{background:#526b9c}.mini-goal.travel{background:#3f927f}.mini-goal.crush{background:#dd6a6a}
+.actions-in-cell{display:flex;flex-direction:column;gap:8px}
+.action-row{display:flex;align-items:center;gap:10px;width:100%;padding:9px 9px;border-radius:12px;background:#f7f3ee;text-align:left;transition:.12s ease}
+.action-row:active{transform:scale(.985)}
+.action-row.done{background:#eef8e7}
+.type-icon{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:#fff;box-shadow:0 6px 14px rgba(70,50,30,.07);font-size:18px;flex:0 0 auto}
+.type-icon.read{background:#eef5ff;color:#357fc4}.type-icon.todo{background:#eef9e7;color:#44a414}.type-icon.coding-quiz{background:#fff4db;color:#c78012}.type-icon.tell{background:#f4ecff;color:#7962d6}
+.action-copy{flex:1;min-width:0}
+.action-copy b{font-size:13px;line-height:1.25;display:block}
+.action-copy span{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:10.8px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reward{display:flex;align-items:center;gap:2px;color:#c26b12;font-size:11px;font-weight:900;white-space:nowrap}
+.chev{font-size:18px;color:#b5aaa0}
+.expand-wrap{padding:10px 12px 2px}
+.expand-btn{width:100%;height:42px;border-radius:999px;background:#111;color:#fff;font-weight:900;font-size:13px}
+.resources{padding-bottom:18px}
+.goal-feed{padding:14px 0 8px;margin-top:8px;border-top:8px solid rgba(50,40,30,.045)}
+.goal-feed.primary{background:linear-gradient(180deg,rgba(255,248,230,.9),rgba(244,240,234,0));padding-top:16px;border-top:0}
+.goal-feed-head{margin:0 12px 14px;border-radius:24px;padding:18px 16px 16px;color:#fff;box-shadow:0 16px 34px rgba(55,42,28,.16);overflow:hidden;position:relative;min-height:118px}
+.goal-feed-head:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.18),rgba(0,0,0,0));opacity:.58}
+.goal-feed-head:after{content:"";position:absolute;right:-34px;bottom:-64px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.2)}
+.goal-feed-head.slim{background:linear-gradient(135deg,#3f9a58,#75c882)}
+.goal-feed-head.skin{background:linear-gradient(135deg,#dc7d97,#eea7bb)}
+.goal-feed-head.crush{background:linear-gradient(135deg,#dd6a6a,#ef9b8e)}
+.goal-feed-head.sleep{background:linear-gradient(135deg,#526b9c,#88a8d8)}
+.goal-feed-head.ai{background:linear-gradient(135deg,#7866d8,#9d8cf0)}
+.goal-feed-head.travel{background:linear-gradient(135deg,#3f927f,#73c1ad)}
+.goal-feed-head.manifest{background:linear-gradient(135deg,#b68a2e,#e0bc63)}
+.goal-feed-head .eyebrow{position:relative;z-index:1;font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:1.1px;font-weight:950;opacity:.72}
+.goal-feed-head h3{position:relative;z-index:1;margin:8px 0 0;font-size:22px;line-height:1.1;max-width:285px}
+.goal-feed-head p{position:relative;z-index:1;margin:8px 0 0;font-size:12.3px;line-height:1.42;opacity:.88;max-width:285px}
+.resource-section{padding:4px 0 10px;margin:0 0 4px}
+.resource-head{padding:0 18px 8px}
+.resource-title-row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.resource-head h3{margin:0;font-size:14.5px;letter-spacing:0;color:#4b433c}
+.resource-head p{margin:3px 0 0;font-size:11.5px;line-height:1.4;color:#9a918a}
+.resource-head .mini-goal{display:none}
+.nudge-stack{display:flex;flex-direction:column;gap:10px;padding:0 12px}
+.nudge-card{background:#fff;border:1px solid #eee7df;border-radius:16px;padding:13px 14px;box-shadow:var(--shadow-soft);overflow:hidden}
+.nudge-card h4{margin:0;font-size:14px;line-height:1.25}
+.nudge-card p{margin:5px 0 0;font-size:12px;line-height:1.42;color:#958d86}
+.source{margin-top:9px;display:flex;align-items:center;gap:5px;color:#aaa19a;font-size:11px}
+.source-dot{width:14px;height:14px;border-radius:50%;background:#ff5a2b;color:#fff;display:grid;place-items:center;font-size:9px}
+.big-img{width:100%;height:156px;border-radius:12px;background-size:cover;background-position:center;margin-bottom:10px}
+.small-img-card{display:grid;grid-template-columns:1fr 58px;gap:10px;align-items:center}
+.small-img{width:58px;height:58px;border-radius:12px;background-size:cover;background-position:center;background-color:#eee}
+.todo-nudge{display:flex;gap:10px;align-items:center}
+.check{width:22px;height:22px;border-radius:50%;border:2px solid #ded7d0;display:grid;place-items:center;color:transparent;font-size:13px;font-weight:900}
+.nudge-card.done .check{background:#111;border-color:#111;color:#8cff32}
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.data-box{background:#f6f3ef;border-radius:14px;padding:12px}
+.data-box b{display:block;color:#34a610;font-size:23px;line-height:1}
+.data-box span{font-size:11px;color:#9a918b}
+.black-btn{width:100%;height:42px;border-radius:999px;background:#000;color:#93ff39;font-size:13px;font-weight:900;margin-top:12px}
+.options{display:flex;flex-direction:column;gap:8px;margin-top:11px}
+.option{align-self:flex-start;background:#f1eee9;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800}
+.option.selected{background:#000;color:#93ff39}
+.option-card .options{gap:7px}
+.option-card .option{width:100%;text-align:center}
+.audio{display:flex;align-items:center;gap:10px;margin-top:10px;background:#f0eeec;border-radius:14px;padding:10px}
+.play{width:40px;height:40px;border-radius:50%;background:#000;color:#93ff39;display:grid;place-items:center;font-weight:900}
+.audio-line{flex:1;height:5px;border-radius:999px;background:#fff;position:relative}
+.audio-line:before{content:"";position:absolute;left:0;top:0;bottom:0;width:34%;background:#444;border-radius:inherit}
+.calendar-ok{margin-top:10px;display:inline-flex;background:#686868;color:#fff;border-radius:8px;padding:7px 13px;font-size:12px;font-weight:800}
+.floating-ip{position:fixed;right:calc(50% - 202px);bottom:18px;z-index:12;width:58px;height:58px;border-radius:50%;background:#fff5dc;display:grid;place-items:center;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.8)}
+.floating-ip img{width:56px;height:56px;border-radius:50%}
+@media(max-width:430px){.floating-ip{right:16px}}
+.detail-head{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:16px;background:rgba(244,240,234,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.03)}
+.back{width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid var(--line);font-size:20px}
+.detail-head h1{margin:0;font-size:16px;flex:1;line-height:1.2}
+.detail-body{padding:14px 14px 24px}
+.agent-note{display:flex;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px}
+.agent-note img{width:44px;height:44px;border-radius:50%;background:#fff5dc;flex:0 0 auto}
+.agent-note p{margin:0;font-size:12.5px;line-height:1.5;color:#706861}
+.read-article,.quiz-panel,.todo-panel,.tell-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow-soft)}
+.read-article h2,.quiz-panel h2,.todo-panel h2,.tell-panel h2{font-size:20px;line-height:1.18;margin:4px 0 8px}
+.read-article p{font-size:14px;line-height:1.65;color:#615a55}
+.read-image{height:180px;border-radius:14px;background-size:cover;background-position:center;margin-bottom:12px}
+.finish-btn{width:100%;height:46px;border-radius:999px;background:#000;color:#93ff39;font-weight:900;margin-top:14px}
+.todo-item{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #eee8e0}
+.todo-item:last-child{border-bottom:0}
+.todo-text b{display:block;font-size:14px}.todo-text span{font-size:12px;color:#928982}
+.quiz-choices{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.quiz-choice{text-align:left;border-radius:14px;padding:12px;background:#f5f1ec;color:#221f1c;font-weight:800}
+.quiz-choice.correct{background:#000;color:#93ff39}
+.quiz-choice.wrong{background:#ffe6e0;color:#b3371f}
+.chat-box{background:#f5f1ec;border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:86%;padding:10px 12px;border-radius:15px;font-size:13px;line-height:1.45}
+.bubble.agent{background:#fff;border:1px solid #e9e1d8;align-self:flex-start}
+.bubble.user{background:#111;color:#fff;align-self:flex-end}
+.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.preview-img{height:74px;border-radius:12px;background-size:cover;background-position:center;background-color:#ddd}
+.composer{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px}
+.composer textarea{width:100%;min-height:76px;border:0;outline:0;resize:none;font-size:14px;line-height:1.45;color:#221f1c}
+.composer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.upload-chip{height:34px;border-radius:999px;background:#f1ede8;display:flex;align-items:center;gap:6px;padding:0 10px;font-size:12px;font-weight:800;position:relative;overflow:hidden}
+.upload-chip input{position:absolute;inset:0;opacity:0}
+.send{height:36px;border-radius:999px;background:#000;color:#93ff39;font-weight:900;padding:0 16px}
+.feedback-card{display:none;margin-top:12px;background:#eff9e9;border:1px solid #d8ecc9;border-radius:16px;padding:12px;font-size:13px;line-height:1.5;color:#415037}
+.jar-screen{background:linear-gradient(180deg,#f4f0ea 0%,#ece5f3 100%)}
+.jar-top{display:flex;align-items:center;gap:10px;padding:16px}
+.jar-top h1{font-size:18px;margin:0;flex:1}
+.jar-wrap{height:330px;display:grid;place-items:center;position:relative}
+.jar-body{width:210px;height:252px;border:8px solid rgba(255,255,255,.75);border-top:0;border-radius:0 0 42px 42px;background:rgba(255,255,255,.36);box-shadow:inset 0 0 30px rgba(255,255,255,.7),0 20px 40px rgba(70,45,90,.13);position:relative;overflow:hidden}
+.jar-lid{position:absolute;top:34px;width:230px;height:38px;border-radius:50%;background:#c08b2b;box-shadow:inset 0 -8px 0 rgba(80,50,10,.12);z-index:2}
+.jar-fill{position:absolute;inset:16px 18px 10px;display:flex;align-content:flex-end;align-items:flex-end;flex-wrap:wrap-reverse;gap:4px}
+.sun-token{width:25px;height:25px;border-radius:50%;background:#b8d9e6;display:grid;place-items:center;font-size:14px;transform:rotate(var(--r))}
+.sun-token.gold{background:#f5b53a}.sun-token.bronze{background:#c9925a}
+.jar-stats{margin:0 14px 12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow-soft)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:99;background:rgba(20,18,16,.92);color:#fff;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:800;transition:.22s ease;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti,.star-fly{position:fixed;z-index:90;pointer-events:none}.confetti{width:7px;height:10px;border-radius:2px}.star-fly{font-size:24px}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <section class="screen active" id="screen-home">
+    <header class="topbar">
+      <div class="top-row">
+        <div class="profile">
+          <img src="ip.png" alt="">
+          <div><div class="hello">嗨，希希</div><div class="date">4 月 24 日 · 周五</div></div>
+        </div>
+        <div class="metrics">
+          <div class="pill fire">🔥 <span id="streak-num">7</span></div>
+          <button class="pill jar-btn" onclick="go('screen-jar')" aria-label="星星罐">
+            <svg class="mini-jar" viewBox="0 0 26 28" fill="none"><ellipse cx="13" cy="4" rx="9" ry="2.4" fill="#C48B1F"/><rect x="3.5" y="5" width="19" height="21" rx="3" fill="rgba(255,255,255,.8)" stroke="#C7B89F" stroke-width="1.2"/><circle cx="9" cy="20" r="2.1" fill="#F5B53A"/><circle cx="14" cy="21.5" r="2" fill="#B8D9E6"/><circle cx="18" cy="19.5" r="1.8" fill="#F5B53A"/></svg>
+            ×<span id="star-total">18</span>
+          </button>
+        </div>
+      </div>
+      <nav class="tabs" id="tabs"></nav>
+      <div class="sky-title">
+        <h1 id="page-title">For you</h1>
+        <div class="scope" id="page-scope">最匹配的 6 个</div>
+      </div>
+      <div class="sky-coach">
+        <div class="speech">
+          <p id="coach-copy"><b>Jovida</b>：先把午饭拍给我吧。你今天上午已经很稳了，中午这一步做完，晚上就轻松很多。</p>
+          <div class="progress"><span id="progress-fill"></span></div>
+        </div>
+        <img src="ip.png" alt="">
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="headline">
+        <h1>For you</h1>
+        <div class="scope">最匹配的 6 个</div>
+      </div>
+      <div class="coach">
+        <img src="ip.png" alt="">
+        <div style="flex:1">
+          <p><b>Jovida</b>：我把完成型 action 放在上面，下面是支持你完成目标的资源。一个 cell 里可能有多个 action。</p>
+          <div class="progress"><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <div><h2>Action</h2></div>
+      <span class="side"><span id="done-count">0</span>/<span id="action-count">0</span> 完成</span>
+    </div>
+    <div class="main-action-wrap" id="main-action-wrap"></div>
+    <div class="action-list" id="action-list"></div>
+    <div class="expand-wrap" id="expand-wrap" style="display:none"><button class="expand-btn" onclick="toggleExpand()">展开全部 Action</button></div>
+
+    <div class="section-title">
+      <div><h2>Support Feed</h2><p>全部可达，但按当前优先级分层展示</p></div>
+    </div>
+    <div class="resources" id="resources"></div>
+
+    <button class="floating-ip" onclick="showToast('Jovida：完成一个 action，我就把小太阳放进罐子里')"><img src="ip.png" alt=""></button>
+  </section>
+
+  <section class="screen" id="screen-action">
+    <header class="detail-head">
+      <button class="back" onclick="go('screen-home')">‹</button>
+      <h1 id="detail-title">Action</h1>
+      <span class="reward" id="detail-reward">☀ +1</span>
+    </header>
+    <div class="detail-body" id="detail-body"></div>
+  </section>
+
+  <section class="screen jar-screen" id="screen-jar">
+    <div class="jar-top"><button class="back" onclick="go('screen-home')">‹</button><h1>星星罐</h1><span class="pill">四月</span></div>
+    <div class="jar-wrap"><div class="jar-lid"></div><div class="jar-body"><div class="jar-fill" id="jar-fill"></div></div></div>
+    <div class="jar-stats">
+      <b>今天新增 <span id="today-stars">0</span> 颗小太阳</b>
+      <p style="margin:6px 0 0;color:#7b736d;font-size:13px;line-height:1.5">完成 action 才会增长连胜。read 是看完，todo 是完成一项，quiz 是答完，tell 是提交给 Agent。</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const tabs = [
+  'For you','减肥','AI 新闻跟进','护肤','每日英语单词学习','显化','Art Daily','睡好觉','旅游','追crush'
+];
+
+const tabTone = {
+  '减肥':'slim','AI 新闻跟进':'ai','护肤':'skin','每日英语单词学习':'english','显化':'manifest','Art Daily':'art','睡好觉':'sleep','旅游':'travel','追crush':'crush'
+};
+
+const tabCoachCopy = {
+  '减肥':'中午这顿最关键。先拍给我，我帮你估一下热量和蛋白，晚上就不用靠猜。',
+  'AI 新闻跟进':'今天只看 5 条就够了。我帮你挑和工作最相关的，别被发布会信息淹没。',
+  '护肤':'今天脸颊有点泛红，先做修护，不要叠太多活性。拍一张我帮你记趋势。',
+  '每日英语单词学习':'今天只学 3 个词。读一遍、做个小测，比收藏十篇材料更有用。',
+  '显化':'先写一句现在时。不要写很远的愿望，写今天能往前推一步的版本。',
+  'Art Daily':'今天看《星月夜》。不用懂术语，先说出你看到的情绪就够了。',
+  '睡好觉':'今晚别等困了才准备睡。先把 22:30 的提醒设好，睡前会少很多阻力。',
+  '旅游':'先看出发清单。证件、预算、行程这三件确认了，后面就不慌。',
+  '追crush':'把今天发生的事告诉我。先别急着发下一句，我们先看节奏和对方信号。'
+};
+
+const actions = [
+  {id:'diet-tell',tab:'减肥',type:'tell',stars:2,title:'拍照/文字告诉 Agent 今天吃了什么',meta:'tell · 可传多张午饭照片',prompt:'把今天的饮食发给我：可以写文字，也可以上传餐盘照片。我会估算热量、蛋白质，并给你晚餐建议。',feedback:'这顿约 620 kcal，蛋白质够，油脂略高。晚餐建议用清蒸鱼或豆腐补蛋白，主食减半。'},
+  {id:'fat-quiz',tab:'减肥',type:'coding-quiz',stars:2,title:'学习今日减肥知识',meta:'coding quiz · 饱腹感判断',question:'减脂午餐里，哪一个组合最稳？',choices:['奶茶 + 可颂','鸡胸 + 藜麦 + 大量蔬菜','只吃水果','完全不吃碳水'],answer:1},
+  {id:'ai-read',tab:'AI 新闻跟进',type:'read',stars:2,title:'读完今天推荐的 AI 文章和解读',meta:'read · 5 条信号',image:'https://images.unsplash.com/photo-1677691820099-307bdc1d2e9f?w=900',body:['今天最值得注意的是多模态 Agent 工具链开始从 demo 走向稳定产品。模型能力本身还在涨，但真正改变工作流的是“能连续处理上下文、文件和网页”的执行层。','对你来说，关键不是追每一条发布，而是把新闻按影响分层：会改变工作方式的、只是性能提升的、暂时不用管的。','今天的结论：把 Claude Code / Cursor / Figma Make 当成一条产品原型流水线来看，而不是孤立工具。']},
+  {id:'skin-routine',tab:'护肤',type:'todo',stars:2,title:'完成今日护肤 routine',meta:'todo · 完成任意 1 步即算 action',todos:['温水洁面 30 秒','修护精华 2 滴','保湿乳液薄涂','SPF50 防晒']},
+  {id:'skin-quiz',tab:'护肤',type:'coding-quiz',stars:2,title:'学习今日护肤知识',meta:'coding quiz · 屏障修护',question:'今天脸颊泛红时，最应该优先做什么？',choices:['叠加酸类猛攻','先修护屏障并减少刺激','频繁去角质','完全不保湿'],answer:1},
+  {id:'skin-tell',tab:'护肤',type:'tell',stars:1,title:'上传今日皮肤照片',meta:'tell · 自然光自拍',prompt:'发一张今天的皮肤状态，最好是自然光、无滤镜。我会记录泛红、油分和屏障趋势。',feedback:'今天泛红比昨天下降 12%，T 区略油。今晚可以减少精华叠加，只保湿修护。'},
+  {id:'cosmetics-tell',tab:'护肤',type:'tell',stars:1,title:'告诉 Agent 你正在用的化妆品',meta:'tell · 文字或图片都可以',prompt:'把你现在用的护肤品/化妆品发给我，拍瓶身或直接写名称都行。我会帮你检查冲突和使用顺序。',feedback:'这套里维 C 和酸类不要同晚叠加。建议早 C 晚 A，中间穿插 2 天纯修护。'},
+  {id:'english-read',tab:'每日英语单词学习',type:'read',stars:1,title:'学习今天的三个英语单词',meta:'read · collaborate / retain / objective',image:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=900',body:['Collaborate: to work with others toward a shared goal. 例句：We need to collaborate on this project.','Retain: to keep something or continue to have it. 例句：Good notes help you retain new words.','Objective: a goal or something you plan to achieve. 例句：My objective is to speak more naturally.']},
+  {id:'english-quiz',tab:'每日英语单词学习',type:'coding-quiz',stars:2,title:'完成 English Quiz',meta:'coding quiz · 三词挑战',question:'“保留、记住”最接近哪个词？',choices:['collaborate','retain','objective','random'],answer:1},
+  {id:'manifest-todo',tab:'显化',type:'todo',stars:1,title:'完成每天的显化打卡',meta:'todo · I did it',todos:['写下今天最想显化的一件事','用一句现在时描述它','点击 I did it']},
+  {id:'art-read',tab:'Art Daily',type:'read',stars:2,title:'看每天的画作',meta:'read · 今日作品',image:'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=900',body:['今天看梵高的《星月夜》。这幅画不是夜空的复制，而是情绪被笔触放大后的夜空。','柏树像火焰一样把地面和天空连起来，旋涡让静止的画面有了运动感。','看完问自己一个问题：如果你今晚画自己的天空，会让它平静，还是让它旋转？']},
+  {id:'sleep-todo',tab:'睡好觉',type:'todo',stars:2,title:'完成每日睡眠 routine',meta:'todo · 晒太阳/关灯/不玩手机',todos:['上午晒太阳 10 分钟','睡前 60 分钟调暗灯光','手机放到床外','做 5 分钟呼吸']},
+  {id:'sleep-quiz',tab:'睡好觉',type:'coding-quiz',stars:1,title:'学习睡眠知识',meta:'coding quiz · NSDR',question:'想更快入睡，睡前 1 小时更推荐？',choices:['强光刷短视频','调暗灯光并减少刺激','喝浓茶','临睡前高强度运动'],answer:1},
+  {id:'crush-tell',tab:'追crush',type:'tell',stars:3,title:'告诉 Agent 今天和 crush 发生的事',meta:'tell · 图片/文字聊天输入框',prompt:'把今天你们发生的事告诉我：可以写几句话，也可以传聊天截图。我会判断节奏、情绪和下一句怎么接。',feedback:'他今天主动延展了话题，兴趣是正向的。建议今晚不要追问，用一个轻松场景开新话题，例如下班路上的照片。'},
+  {id:'crush-quiz',tab:'追crush',type:'coding-quiz',stars:2,title:'看追 crush 的知识',meta:'coding quiz · 关系节奏',question:'对方回复慢但内容认真时，更好的做法是？',choices:['连续追问','立刻冷处理','降低频率但提高信息质量','发长篇质问'],answer:2}
+];
+
+const resourcesByTab = {
+  '减肥':[
+    {title:'附近健康午饭',sub:'Google Places 推荐，按距离和热量排序',items:[
+      {style:'small',title:'Quick Protein Bowl',text:'鸡胸、藜麦、西兰花 · 520kcal',img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300',source:'Google Map · 122m'},
+      {style:'small',title:'南小馆健康粥',text:'低 GI，适合今天午饭替换',img:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=300',source:'Google Map · 620m'},
+      {style:'small',title:'御膳日料刺身碗',text:'三文鱼、海藻、米饭半份 · 560kcal',img:'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=300',source:'Google Map · 910m'}
+    ]},
+    {title:'今日菜谱',sub:'内部链接到菜谱功能',items:[
+      {style:'small',title:'15-min Burrito Bowl',text:'牛油果、豆子、彩椒 · 610kcal',img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300',source:'Recipes'},
+      {style:'small',title:'番茄鸡胸藜麦碗',text:'高蛋白 · 520kcal',img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300',source:'Recipes'},
+      {style:'small',title:'豆腐牛油果沙拉',text:'轻晚餐 · 430kcal',img:'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=300',source:'Recipes'}
+    ]}
+  ],
+  'AI 新闻跟进':[
+    {title:'AI News',sub:'5 条与你工作流相关的信号',items:[
+      {style:'small',title:'Claude Code 重构 11 个 React 表单',text:'2 小时完成第一版，review 发现 3 处边界问题',img:'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300',source:'Team log · 09:20'},
+      {style:'small',title:'Figma Make 原型到代码',text:'适合做交互 demo，组件状态仍需工程师整理',img:'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=300',source:'Figma Blog · 08:40'},
+      {style:'small',title:'OpenAI Agents SDK 上手',text:'文件搜索 + 工具调用的样板更稳定了',img:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=300',source:'Docs digest · 07:55'},
+      {style:'small',title:'PM 今天该关注的 3 个变化',text:'Agent 编排、设计稿生成代码、内部知识库接入',img:'https://images.unsplash.com/photo-1552664730-d307ca884978?w=300',source:'Jovida digest · 07:30'}
+    ]}
+  ],
+  '护肤':[
+    {title:'今日肤况趋势',sub:'先看为什么要修护，再决定要不要补单品',items:[
+      {style:'data',title:'Skin trend',text:'今日皮肤照显示：泛红下降，但 T 区油分偏高',a:'-12%',b:'+8%'}
+    ]},
+    {title:'今晚修护补位',sub:'只放和今晚 routine 有关的 2 个可选项',items:[
+      {style:'small',title:'修护精华 · 维稳之选',text:'针对近 7 天泛红数据',img:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=300',source:'Sephora'},
+      {style:'small',title:'纯物理防晒 SPF50+',text:'明天白天用，敏感肌友好',img:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300',source:'Amazon'}
+    ]}
+  ],
+  '每日英语单词学习':[],
+  '显化':[
+    {title:'Daily Manifestation',sub:'轻量打卡和复盘',items:[
+      {style:'big',title:'Be mindful. Be grateful.',text:'今天把注意力放在一个确定行动上',img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=700',button:'I Did it'},
+      {style:'text',title:'今日显化句',text:'我正在稳定地接近自己想要的关系和生活。'}
+    ]}
+  ],
+  'Art Daily':[],
+  '睡好觉':[
+    {title:'Sleep Brief',sub:'先看报告，再决定今晚怎么睡',items:[
+      {style:'report',title:'你的睡眠报告 · 4 周缺觉计划',text:'过去 7 天平均少睡 52 分钟，今晚建议 22:30 关灯',button:'View Plan'}
+    ]},
+    {title:'Daily Routine',sub:'同一组内只放睡前 checklist',items:[
+      {style:'todo',title:'22:30 调暗灯光',text:'减少强光刺激'},
+      {style:'todo',title:'手机放到床外',text:'降低睡前刷屏概率'},
+      {style:'todo',title:'做 5 分钟呼吸',text:'让心率慢下来'}
+    ]},
+    {title:'NSDR Library',sub:'音频卡片单独成组',items:[
+      {style:'audio',title:'10-Minute NSDR',text:'Huberman Lab 片段，午休或睡前听',source:'Youtube'},
+      {style:'audio',title:'Yoga Nidra · 10 分钟',text:'适合脑子停不下来时',source:'Spotify'}
+    ]},
+    {title:'Sleep Stack',sub:'补剂保持小图商品卡',items:[
+      {style:'small',title:'Magnesium L-Threonate',text:'睡前 1 粒 · ￥218',img:'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300',source:'Amazon'},
+      {style:'small',title:'L-Theanine 茶氨酸',text:'压力大时可选 · ￥129',img:'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=300',source:'Amazon'}
+    ]}
+  ],
+  '旅游':[
+    {title:'行程总览',sub:'先看预算和节奏，不混放外链卡',items:[
+      {style:'report',title:'东京 5 日预算结构',text:'机酒 46%，餐饮 18%，交通 9%，购物预留 27%',button:'View Budget'}
+    ]},
+    {title:'出发清单',sub:'同一组内只放 checklist',items:[
+      {style:'todo',title:'护照与签证照片',text:'出发前 7 天确认'},
+      {style:'todo',title:'转换插头 + 充电宝',text:'放进行李箱外层'},
+      {style:'todo',title:'常用药和创可贴',text:'按 5 天份准备'}
+    ]},
+    {title:'今日安排',sub:'日历提醒单独成组',items:[
+      {style:'calendar',title:'Day 1 · 到达东京',text:'18:30 入住酒店，20:00 晚餐预约',button:'Add to Calendar'},
+      {style:'calendar',title:'Day 2 · 美术馆上午场',text:'10:00 入场，预计停留 2 小时',button:'Add to Calendar'}
+    ]},
+    {title:'附近可以去',sub:'地点推荐保持小图卡',items:[
+      {style:'small',title:'蔦屋书店 · 代官山',text:'雨天备选，适合慢逛',img:'https://images.unsplash.com/photo-1526243741027-444d633d7365?w=300',source:'Google Map · 1.4km'},
+      {style:'small',title:'目黑川散步路线',text:'晚饭后 35 分钟轻松走',img:'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=300',source:'Google Map · 900m'}
+    ]}
+  ],
+  '追crush':[
+    {title:'关系动态',sub:'先看最新信号，再决定下一句',items:[
+      {style:'report',title:'Crush 最新动态分析',text:'本周主动性增强，适合轻邀约，但不要连续追问',button:'View Analysis'}
+    ]},
+    {title:'下一步 todo',sub:'同一组里只放行动建议',items:[
+      {style:'todo',title:'今晚发一张下班路上的照片',text:'打开新场景，不问“在吗”'},
+      {style:'todo',title:'明天中午前不要补问',text:'给对方留回复空间'}
+    ]},
+    {title:'适合轻邀约的地点',sub:'地点推荐保持小图卡',items:[
+      {style:'small',title:'Blue Bottle · 巨鹿路',text:'适合二次约会 · 1.2km',img:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=300',source:'Google Map'},
+      {style:'small',title:'读库书店 · 新天地',text:'可逛 40 分钟，话题自然',img:'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=300',source:'Google Map · 2.1km'}
+    ]},
+    {title:'怎么开口',sub:'选项式反馈单独成组',items:[
+      {style:'options',title:'今晚如果要发一句，选更自然的开场',text:'我会按你们最近聊天风格给建议',options:['刚路过这家店，想起你说喜欢咖啡','今天累死了，你呢？','你明天有空吗？','我刚看到一个展，感觉你会喜欢']}
+    ]}
+  ]
+};
+
+const state = {tab:'For you',expanded:false,done:{},streak:7,starsTotal:18,todayStars:0,jar:[...Array(14).fill('blue'),...Array(4).fill('bronze')]};
+const typeIcon = {'read':'📖','todo':'✓','coding-quiz':'✦','tell':'💬'};
+const typeLabel = {'read':'read','todo':'todo','coding-quiz':'coding quiz','tell':'tell'};
+
+function actionTabsForCurrent(){
+  if(state.tab === 'For you') return ['护肤','追crush','减肥','AI 新闻跟进','每日英语单词学习','Art Daily','睡好觉','显化'];
+  return [state.tab];
+}
+function visibleActions(){
+  const set = actionTabsForCurrent();
+  const list = actions.filter(a=>set.includes(a.tab));
+  return state.tab === 'For you' && !state.expanded ? list.slice(0,6) : list;
+}
+function renderTabs(){
+  document.getElementById('tabs').innerHTML = tabs.map(t=>`<button class="tab ${state.tab===t?'active':''}" onclick="switchTab('${t}')">${t}</button>`).join('');
+}
+function renderHome(){
+  renderTabs();
+  const all = actions.filter(a=>actionTabsForCurrent().includes(a.tab));
+  const visible = visibleActions();
+  document.getElementById('page-title').textContent = state.tab;
+  document.getElementById('page-scope').textContent = state.tab==='For you' ? '最匹配的 6 个' : `${all.length} 个 action`;
+  document.getElementById('coach-copy').innerHTML = state.tab==='For you'
+    ? '<b>Jovida</b>：先把午饭拍给我吧。你今天上午已经很稳了，中午这一步做完，晚上就轻松很多。'
+    : `<b>Jovida</b>：${tabCoachCopy[state.tab] || '先做最容易完成的一件。完成后我会把下一步给你排好。'}`;
+  const doneInScope = all.filter(a=>state.done[a.id]).length;
+  document.getElementById('done-count').textContent = doneInScope;
+  document.getElementById('action-count').textContent = all.length;
+  document.getElementById('progress-fill').style.width = all.length ? (doneInScope/all.length*100)+'%' : '0%';
+  const main = visible[0];
+  document.getElementById('main-action-wrap').innerHTML = main ? renderMainAction(main) : '';
+  document.getElementById('action-list').innerHTML = renderActionGroups(visible.slice(1));
+  const wrap = document.getElementById('expand-wrap');
+  wrap.style.display = state.tab==='For you' && all.length>6 ? 'block' : 'none';
+  wrap.querySelector('button').textContent = state.expanded ? '收起到最匹配的 6 个' : `展开全部 ${all.length} 个 Action`;
+  renderResources();
+}
+function renderActionGroups(list){
+  const groups = [];
+  list.forEach(a=>{
+    let g = groups.find(x=>x.tab===a.tab);
+    if(!g){ g = {tab:a.tab, items:[]}; groups.push(g); }
+    g.items.push(a);
+  });
+  return groups.map(renderActionGroup).join('');
+}
+function renderActionGroup(group){
+  const tone = tabTone[group.tab] || '';
+  const done = group.items.filter(a=>state.done[a.id]).length;
+  const stars = group.items.reduce((sum,a)=>sum+a.stars,0);
+  return `<section class="action-group">
+    <div class="action-group-head">
+      <div class="left"><i class="dot ${tone}"></i><b>${group.tab}</b></div>
+      <span>${done}/${group.items.length} · +${stars}☀</span>
+    </div>
+    ${group.items.map(renderActionItem).join('')}
+  </section>`;
+}
+function renderActionItem(a){
+  const tone = tabTone[a.tab] || '';
+  return `<button class="action-card ${state.done[a.id]?'done':''}" onclick="openAction('${a.id}')">
+    <span class="type-icon ${a.type}">${state.done[a.id]?'✓':typeIcon[a.type]}</span>
+    <span class="action-copy">
+      <b>${a.title}</b>
+      <span><i class="mini-goal ${tone}">${a.tab}</i>${typeLabel[a.type]} · ${a.meta.replace(/^.*? · /,'')}</span>
+    </span>
+    <span class="reward">${'☀'.repeat(a.stars)}</span><span class="chev">›</span>
+  </button>`;
+}
+function renderMainAction(a){
+  const tone = tabTone[a.tab] || '';
+  return `<button class="main-action ${state.done[a.id]?'done':''}" onclick="openAction('${a.id}')">
+    <div class="main-kicker"><span>Now · 主 Action</span><span class="reward">${'☀'.repeat(a.stars)}</span></div>
+    <div class="main-title">${a.title}</div>
+    <div class="main-meta"><span class="mini-goal ${tone}">${a.tab}</span><span>${typeLabel[a.type]}</span><span>·</span><span>${a.meta.replace(/^.*? · /,'')}</span></div>
+    <span class="main-cta">${state.done[a.id]?'已完成':'开始'} →</span>
+    <span class="main-hero-icon ${a.type}">${state.done[a.id]?'✓':typeIcon[a.type]}</span>
+  </button>`;
+}
+function renderResources(){
+  if(state.tab === 'For you'){
+    document.getElementById('resources').innerHTML = renderForYouFeed();
+    return;
+  }
+  const keys = [state.tab];
+  document.getElementById('resources').innerHTML = keys.flatMap(k => (resourcesByTab[k]||[]).map(sec=>renderResourceSection(k,sec))).join('');
+}
+function renderForYouFeed(){
+  const goals = [
+    {tab:'减肥',primary:true,title:'减肥 · 午饭窗口',sub:'现在最有时效性：先支持你完成午饭记录和选择。'},
+    {tab:'护肤',title:'护肤 · 今晚修护',sub:'先看今日肤况，再决定今晚 routine 里要不要补单品。'},
+    {tab:'追crush',title:'追crush · 关系节奏',sub:'把分析、下一步 todo、轻邀约地点分开看。'},
+    {tab:'睡好觉',title:'睡好觉 · 睡前准备',sub:'报告、routine、音频、补剂各自成组，不混放。'},
+    {tab:'AI 新闻跟进',title:'AI 新闻跟进 · 工作流信号',sub:'只放今天和你工作相关的几条，不铺满全网新闻。'},
+    {tab:'旅游',title:'旅游 · 出发准备',sub:'预算、清单、日历、地点按类型分 Section。'},
+    {tab:'显化',title:'显化 · 今日复盘',sub:'轻量内容放在最后，不打断前面的行动流。'}
+  ];
+  return goals.map(renderGoalFeed).join('');
+}
+function renderGoalFeed(goal){
+  const tone = tabTone[goal.tab] || '';
+  return `<section class="goal-feed ${goal.primary?'primary':''}">
+    <div class="goal-feed-head ${tone}">
+      <div class="eyebrow">${goal.primary ? 'Current focus' : 'Goal feed'}</div>
+      <h3>${goal.title}</h3>
+      <p>${goal.sub}</p>
+    </div>
+    ${(resourcesByTab[goal.tab] || []).map(sec => renderResourceSection(goal.tab, sec)).join('')}
+  </section>`;
+}
+function renderResourceSection(tab,sec){
+  const tone = tabTone[tab] || '';
+  return `<section class="resource-section">
+    <div class="resource-head"><div class="resource-title-row"><h3>${sec.title}</h3><span class="mini-goal ${tone}">${tab}</span></div><p>${sec.sub}</p></div>
+    <div class="nudge-stack">${sec.items.map(renderNudge).join('')}</div>
+  </section>`;
+}
+function renderNudge(n){
+  if(n.style==='big') return `<article class="nudge-card"><div class="big-img" style="background-image:url('${n.img}')"></div><h4>${n.title}</h4><p>${n.text}</p>${n.button?`<button class="black-btn" onclick="nudgeDone(this)">${n.button}</button>`:''}<div class="source"><span class="source-dot">↗</span>${n.source||'Internal'}</div></article>`;
+  if(n.style==='small') return `<article class="nudge-card small-img-card"><div><h4>${n.title}</h4><p>${n.text}</p><div class="source"><span class="source-dot">↗</span>${n.source}</div></div><div class="small-img" style="background-image:url('${n.img}')"></div></article>`;
+  if(n.style==='todo') return `<article class="nudge-card" onclick="this.classList.toggle('done')"><div class="todo-nudge"><span class="check">✓</span><div><h4>${n.title}</h4><p>${n.text}</p></div></div></article>`;
+  if(n.style==='data') return `<article class="nudge-card"><h4>${n.title}</h4><p>${n.text}</p><div class="data-grid" style="margin-top:10px"><div class="data-box"><b>${n.a}</b><span>redness</span></div><div class="data-box"><b>${n.b}</b><span>hydration</span></div></div></article>`;
+  if(n.style==='audio') return `<article class="nudge-card"><h4>${n.title}</h4><p>${n.text}</p><div class="audio"><span class="play">▶</span><span>00:00</span><div class="audio-line"></div><span style="color:#bbb;font-size:11px">03:24</span></div><div class="source"><span class="source-dot">↗</span>${n.source}</div></article>`;
+  if(n.style==='report') return `<article class="nudge-card"><h4>${n.title}</h4><p>${n.text}</p><button class="black-btn" onclick="nudgeDone(this)">${n.button}</button></article>`;
+  if(n.style==='calendar') return `<article class="nudge-card"><h4>${n.title}</h4><p>${n.text}</p><button class="black-btn" onclick="calendarDone(this)">${n.button}</button></article>`;
+  if(n.style==='options') return `<article class="nudge-card option-card"><h4>${n.title}</h4><p>${n.text}</p><div class="options">${n.options.map((o,i)=>`<button class="option ${i===0?'selected':''}" onclick="selectOption(this)">${o}</button>`).join('')}</div></article>`;
+  return `<article class="nudge-card"><h4>${n.title}</h4><p>${n.text}</p></article>`;
+}
+function switchTab(tab){state.tab=tab;state.expanded=false;renderHome();document.getElementById('screen-home').scrollTop=0}
+function toggleExpand(){state.expanded=!state.expanded;renderHome()}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const el=document.getElementById(id);el.classList.add('active');el.scrollTop=0;if(id==='screen-jar')renderJar()}
+function openAction(id){
+  const a = actions.find(x=>x.id===id);
+  tellImages = [];
+  document.getElementById('detail-title').textContent = a.title;
+  document.getElementById('detail-reward').textContent = '☀'.repeat(a.stars)+' +'+a.stars;
+  const body = document.getElementById('detail-body');
+  if(a.type==='read') body.innerHTML = readTemplate(a);
+  if(a.type==='todo') body.innerHTML = todoTemplate(a);
+  if(a.type==='coding-quiz') body.innerHTML = quizTemplate(a);
+  if(a.type==='tell') body.innerHTML = tellTemplate(a);
+  go('screen-action');
+}
+function readTemplate(a){
+  return `<div class="agent-note"><img src="ip.png"><p><b>Jovida</b>：读完这张卡，点击底部按钮，这个 read action 就完成。</p></div>
+    <article class="read-article">${a.image?`<div class="read-image" style="background-image:url('${a.image}')"></div>`:''}<h2>${a.title}</h2>${a.body.map(p=>`<p>${p}</p>`).join('')}<button class="finish-btn" onclick="completeAction('${a.id}', this)">看完了</button></article>`;
+}
+function todoTemplate(a){
+  return `<div class="agent-note"><img src="ip.png"><p><b>Jovida</b>：todo 类完成 1 个就算这个 action 完成，你也可以继续把整组做完。</p></div>
+    <article class="todo-panel"><h2>${a.title}</h2>${a.todos.map((t,i)=>`<div class="todo-item" onclick="todoClick(this,'${a.id}')"><span class="check">✓</span><div class="todo-text"><b>${t}</b><span>${i===0?'完成这一项即可点亮 action':'可选继续完成'}</span></div></div>`).join('')}</article>`;
+}
+function quizTemplate(a){
+  return `<div class="agent-note"><img src="ip.png"><p><b>Jovida</b>：答完这个 coding quiz，就算 action 完成。</p></div>
+    <article class="quiz-panel"><h2>${a.question}</h2><div class="quiz-choices">${a.choices.map((c,i)=>`<button class="quiz-choice" onclick="answerQuiz(this,'${a.id}',${i},${a.answer})">${c}</button>`).join('')}</div><div class="feedback-card" id="quiz-feedback"></div></article>`;
+}
+function tellTemplate(a){
+  return `<div class="agent-note"><img src="ip.png"><p><b>Jovida</b>：${a.prompt}</p></div>
+    <article class="tell-panel"><h2>${a.title}</h2><div class="chat-box" id="chat-box"><div class="bubble agent">${a.prompt}</div></div>
+    <div class="composer"><textarea id="tell-text" placeholder="输入你想告诉 Agent 的内容..."></textarea><div class="preview-grid" id="preview-grid" style="display:none;margin-bottom:8px"></div><div class="composer-row"><label class="upload-chip">＋ 图片<input type="file" accept="image/*" multiple onchange="previewTellImages(this)"></label><button class="send" onclick="submitTell('${a.id}')">提交</button></div></div>
+    <div class="feedback-card" id="tell-feedback">${a.feedback}</div></article>`;
+}
+function completeAction(id, fromEl){
+  const a = actions.find(x=>x.id===id);
+  if(state.done[id]){showToast('这个 action 已完成');return}
+  state.done[id]=true;
+  state.starsTotal += a.stars;
+  state.todayStars += a.stars;
+  state.streak += Object.keys(state.done).length===1 ? 1 : 0;
+  const color = a.stars>=3?'gold':a.stars===1?'bronze':'blue';
+  for(let i=0;i<a.stars;i++) state.jar.push(color);
+  document.getElementById('streak-num').textContent=state.streak;
+  document.getElementById('star-total').textContent=state.starsTotal;
+  renderHome();
+  flySun(fromEl || document.querySelector('.detail-head'), a.stars);
+  confetti();
+  showToast(`${a.title} · +${a.stars} ☀`);
+}
+function todoClick(el,id){el.classList.add('done');el.querySelector('.check').style.cssText='background:#111;border-color:#111;color:#93ff39';completeAction(id,el)}
+function answerQuiz(btn,id,choice,answer){
+  btn.parentElement.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  btn.classList.add(choice===answer?'correct':'wrong');
+  if(choice!==answer) btn.parentElement.children[answer].classList.add('correct');
+  const f=document.getElementById('quiz-feedback');f.style.display='block';f.innerHTML=choice===answer?'答对了。这个 action 已完成。':'已给出正确答案。答完也算完成。';
+  completeAction(id,btn);
+}
+let tellImages = [];
+function previewTellImages(input){
+  tellImages = Array.from(input.files||[]).slice(0,6);
+  const grid=document.getElementById('preview-grid');
+  grid.style.display=tellImages.length?'grid':'none';
+  grid.innerHTML=tellImages.map(f=>`<div class="preview-img" style="background-image:url('${URL.createObjectURL(f)}')"></div>`).join('');
+}
+function submitTell(id){
+  const text=document.getElementById('tell-text').value.trim();
+  if(!text && !tellImages.length){showToast('先输入文字或上传图片');return}
+  const chat=document.getElementById('chat-box');
+  chat.insertAdjacentHTML('beforeend',`<div class="bubble user">${text || '上传了 '+tellImages.length+' 张图片'}</div>`);
+  if(tellImages.length) chat.insertAdjacentHTML('beforeend',`<div class="preview-grid">${tellImages.map(f=>`<div class="preview-img" style="background-image:url('${URL.createObjectURL(f)}')"></div>`).join('')}</div>`);
+  const sendBtn = document.querySelector('.send');
+  document.getElementById('tell-feedback').style.display='block';
+  completeAction(id,sendBtn);
+  document.querySelector('.tell-panel .composer').style.display='none';
+}
+function nudgeDone(btn){btn.textContent='Feedback Successful';btn.style.background='#666';btn.style.color='#fff';showToast('已反馈')}
+function calendarDone(btn){btn.insertAdjacentHTML('afterend','<div class="calendar-ok">Added successfully</div>');btn.remove();showToast('已加入日历')}
+function selectOption(btn){
+  btn.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  btn.classList.add('selected');
+  showToast('已记录这个开场');
+}
+function renderJar(){
+  document.getElementById('today-stars').textContent = state.todayStars;
+  document.getElementById('jar-fill').innerHTML = state.jar.map(c=>`<span class="sun-token ${c}" style="--r:${(Math.random()*70-35).toFixed(1)}deg">☀</span>`).join('');
+}
+function showToast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.getElementById('phone').appendChild(t)}t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2100)}
+function flySun(fromEl,n){const r=fromEl.getBoundingClientRect();for(let i=0;i<n;i++){const s=document.createElement('div');s.className='star-fly';s.textContent='☀';s.style.left=r.left+r.width/2+'px';s.style.top=r.top+r.height/2+'px';document.body.appendChild(s);s.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate(130px,-170px) scale(.5)',opacity:.1}],{duration:850,delay:i*90,easing:'cubic-bezier(.2,.8,.2,1)'});setTimeout(()=>s.remove(),1100)}}
+function confetti(){for(let i=0;i<22;i++){const c=document.createElement('div');c.className='confetti';c.style.left='50%';c.style.top='34%';c.style.background=['#83d843','#ff7a45','#7866d8','#f5b53a'][i%4];document.body.appendChild(c);c.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${Math.random()*260-130}px,${Math.random()*260-180}px) rotate(${Math.random()*360}deg)`,opacity:0}],{duration:1200,easing:'ease-out'});setTimeout(()=>c.remove(),1300)}}
+renderHome();
+renderJar();
+</script>
+</body>
+</html>
