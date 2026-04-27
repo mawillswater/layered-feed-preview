@@ -84,6 +84,7 @@ button{border:0;cursor:pointer}
 .section-title p{margin:3px 0 0;color:var(--soft);font-size:11.5px;line-height:1.35}
 .section-title .side{font-size:11px;color:var(--muted);font-weight:800;background:#ebe4db;border-radius:999px;padding:5px 9px;white-space:nowrap}
 .main-action-wrap{padding:0 12px 9px}
+.sky-coach .speech .main-action-wrap{padding:0;margin-top:10px}
 .main-action{position:relative;width:100%;border:1px solid rgba(255,255,255,.8);border-radius:22px;padding:16px 16px 15px;min-height:154px;background:linear-gradient(135deg,#fff8e6,#ffd996 78%,#ffc76c);box-shadow:0 16px 34px rgba(190,126,30,.22);overflow:hidden;text-align:left}
 .main-action:before{content:"";position:absolute;right:-42px;bottom:-54px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.42)}
 .main-action .main-kicker{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;font-weight:900;color:#70460d;text-transform:uppercase;letter-spacing:.4px}
@@ -233,6 +234,81 @@ button{border:0;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:99;background:rgba(20,18,16,.92);color:#fff;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:800;transition:.22s ease;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .confetti,.star-fly{position:fixed;z-index:90;pointer-events:none}.confetti{width:7px;height:10px;border-radius:2px}.star-fly{font-size:24px}
+
+/* dashboard board area — goes above nudges in each category */
+.dashboard-section{padding:0 12px;margin:4px 0 12px}
+.dashboard-card-wrap{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.95);border-radius:22px;padding:14px;box-shadow:0 12px 28px rgba(60,45,30,.08);backdrop-filter:blur(8px)}
+.dashboard-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding:0 2px}
+.dashboard-head h3{margin:0;font-size:18px;letter-spacing:0;color:#1f1c19;font-weight:900}
+.dashboard-head .records{display:flex;align-items:center;gap:4px;color:#aaa19a;font-size:12.5px;font-weight:700}
+.dashboard-head .records .chev{color:#c6bdb4;font-size:18px;line-height:1}
+.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric-card{position:relative;background:#fff;border-radius:18px;padding:12px 12px 14px;min-height:154px;overflow:hidden;border:1px solid #efe9df}
+.metric-card .label{font-size:12.5px;color:#7e7770;font-weight:700;line-height:1.2}
+.metric-card .value{display:flex;align-items:baseline;gap:6px;margin-top:8px;font-size:30px;font-weight:950;color:#1f1c19;line-height:1.05}
+.metric-card .value-tag{font-size:14px;color:#3aa813;font-weight:900}
+.metric-card .sync{position:absolute;top:11px;right:11px;color:#bcb3a9;font-size:14px;line-height:1}
+.metric-card.cal .blob{position:absolute;left:-12px;right:-12px;bottom:-32px;height:96px;background:radial-gradient(ellipse at 50% 0%,#ff8a26 0%,#ffb84a 48%,#ffd96a 70%,transparent 80%);border-radius:50%;filter:blur(.4px)}
+.metric-card.cal .blob-text{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-style:italic;font-size:21px;font-weight:900;color:#fff;letter-spacing:.4px;text-shadow:0 2px 4px rgba(170,80,10,.22)}
+.metric-card.score .balls{position:absolute;right:10px;bottom:12px;display:flex}
+.metric-card.score .ball{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:900;border:2.5px solid #fff;font-style:italic;margin-left:-12px;box-shadow:0 4px 10px rgba(40,30,20,.10)}
+.metric-card.score .ball:first-child{margin-left:0}
+.metric-card.score .ball.g{background:linear-gradient(135deg,#76d340,#3a9b16)}
+.metric-card.score .ball.t{background:linear-gradient(135deg,#43c8a8,#1f9d83)}
+.metric-card.score .ball.b{background:linear-gradient(135deg,#5db1ec,#3a83c9)}
+.metric-card.sleep-dur .delta{font-size:11.5px;color:#3aa813;font-weight:800;margin-top:6px}
+.metric-card.sleep-dur .moon{position:absolute;right:12px;bottom:10px;font-size:38px;line-height:1;filter:drop-shadow(0 4px 8px rgba(80,107,156,.24))}
+.metric-card.sleep-score .value-tag.sound{color:#5b7bc5}
+.metric-card.sleep-score .stars{position:absolute;left:12px;right:12px;bottom:14px;display:flex;gap:3px;font-size:18px;color:#f5b53a}
+.dashboard-cta{margin-top:10px;width:100%;background:#fff;border:1px solid #efe9df;border-radius:18px;padding:13px 14px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;font-weight:900;color:#1f1c19;box-shadow:0 4px 14px rgba(60,45,30,.04)}
+.dashboard-cta .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:16px;color:#fff;background:#34a610}
+.dashboard-cta .ic.moon{background:#526b9c}
+
+/* sleep log screen */
+.sleep-log-body{padding:14px}
+.sleep-log-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow-soft);margin-bottom:12px}
+.sleep-log-card h3{margin:0 0 4px;font-size:14px}
+.sleep-log-card>p{margin:0 0 12px;font-size:12px;color:var(--soft);line-height:1.4}
+.sleep-time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sleep-time-row label{display:block;font-size:11px;color:#aaa19a;margin:0 0 6px;font-weight:800}
+.time-input{background:#f7f3ee;border-radius:12px;padding:12px;border:0;font-size:18px;font-weight:800;color:#1f1c19;width:100%;outline:0;font-family:inherit}
+.quality-row{display:flex;justify-content:space-between;gap:6px}
+.quality-row button{flex:1;background:#f7f3ee;border:0;border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#776d65;font-weight:800}
+.quality-row button .em{font-size:22px;line-height:1}
+.quality-row button.selected{background:#111;color:#fff}
+.sleep-submit{width:100%;height:46px;border-radius:999px;background:#000;color:#93ff39;font-weight:900;margin-top:6px}
+
+/* main-action row, nested inside Jovida's speech bubble */
+.now-action{position:relative;display:flex;align-items:center;gap:9px;width:100%;padding:9px 9px;border-radius:13px;background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.92);box-shadow:0 4px 10px rgba(56,118,150,.10);text-align:left;transition:.12s ease}
+.now-action:active{transform:scale(.985)}
+.now-action .type-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#eef5ff;font-size:16px;flex:0 0 auto;box-shadow:0 3px 8px rgba(56,118,150,.10)}
+.now-action .action-copy{flex:1;min-width:0}
+.now-action .action-copy b{font-size:12.8px;line-height:1.25;display:block;color:#1f2c34}
+.now-action .action-copy span{display:flex;align-items:center;gap:5px;margin-top:3px;font-size:10.5px;color:#6f7f88;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-action .reward{color:#c26b12;font-size:11px;font-weight:900;white-space:nowrap}
+.now-action .chev{font-size:16px;color:#a8b6c0}
+.now-action.done{background:#eef8e7;border-color:#d7e8ca}
+.now-action.done .action-copy b{color:#7d8b75;text-decoration:line-through;text-decoration-color:rgba(35,31,28,.42);text-decoration-thickness:2px}
+
+/* legacy now-card (kept for compatibility, no longer used) */
+.now-card{position:relative;margin:14px 12px 9px;background:linear-gradient(135deg,#fff8e6 0%,#ffe1ad 70%,#ffd385 100%);border:1px solid rgba(255,255,255,.85);border-radius:22px;padding:14px;box-shadow:0 16px 34px rgba(190,126,30,.20);overflow:hidden}
+.now-card:before{content:"";position:absolute;right:-46px;bottom:-58px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.36);pointer-events:none}
+.now-coach{position:relative;z-index:1;display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.now-coach .speech{flex:1;background:rgba(255,255,255,.86);border:1px solid rgba(255,255,255,.95);border-radius:18px;padding:10px 12px;box-shadow:0 8px 20px rgba(120,75,20,.10);position:relative}
+.now-coach .speech:after{content:"";position:absolute;right:-8px;bottom:18px;width:14px;height:14px;background:rgba(255,255,255,.86);border-right:1px solid rgba(255,255,255,.95);border-bottom:1px solid rgba(255,255,255,.95);transform:rotate(-45deg)}
+.now-coach .speech p{margin:0;font-size:12.5px;line-height:1.46;color:#5b4626}
+.now-coach .speech b{color:#3a2810}
+.now-coach .speech .progress{margin-top:7px;height:5px;border-radius:999px;background:rgba(135,90,20,.14);overflow:hidden}
+.now-coach .speech .progress span{display:block;height:100%;background:linear-gradient(90deg,#83d843,#ffc247);border-radius:inherit;transition:width .35s ease}
+.now-coach img{width:54px;height:54px;border-radius:50%;background:#fff5dc;flex:0 0 auto;filter:drop-shadow(0 8px 14px rgba(170,120,30,.20))}
+.now-action{position:relative;z-index:1;display:flex;align-items:center;gap:10px;width:100%;padding:11px 11px;border-radius:15px;background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.98);box-shadow:0 4px 14px rgba(120,75,20,.08);text-align:left;transition:.12s ease}
+.now-action:active{transform:scale(.985)}
+.now-action .now-kicker{position:absolute;top:-8px;left:12px;background:#111;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.6px;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.now-action .action-copy{flex:1;min-width:0}
+.now-action .action-copy b{font-size:13px;line-height:1.25;display:block}
+.now-action .action-copy span{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:10.8px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-action.done{background:#eef8e7;border-color:#d7e8ca}
+.now-action.done .action-copy b{color:#8f8881;text-decoration:line-through;text-decoration-color:rgba(35,31,28,.42);text-decoration-thickness:2px}
 </style>
 </head>
 <body>
@@ -261,6 +337,7 @@ button{border:0;cursor:pointer}
         <div class="speech">
           <p id="coach-copy"><b>Jovida</b>：先把午饭拍给我吧。你今天上午已经很稳了，中午这一步做完，晚上就轻松很多。</p>
           <div class="progress"><span id="progress-fill"></span></div>
+          <div class="main-action-wrap" id="main-action-wrap"></div>
         </div>
         <img src="ip.png" alt="">
       </div>
@@ -284,7 +361,6 @@ button{border:0;cursor:pointer}
       <div><h2>Action</h2></div>
       <span class="side"><span id="done-count">0</span>/<span id="action-count">0</span> 完成</span>
     </div>
-    <div class="main-action-wrap" id="main-action-wrap"></div>
     <div class="action-list" id="action-list"></div>
     <div class="expand-wrap" id="expand-wrap" style="display:none"><button class="expand-btn" onclick="toggleExpand()">展开全部 Action</button></div>
 
@@ -303,6 +379,36 @@ button{border:0;cursor:pointer}
       <span class="reward" id="detail-reward">☀ +1</span>
     </header>
     <div class="detail-body" id="detail-body"></div>
+  </section>
+
+  <section class="screen" id="screen-log-sleep">
+    <header class="detail-head">
+      <button class="back" onclick="go('screen-home')">‹</button>
+      <h1>记录昨晚睡眠</h1>
+    </header>
+    <div class="sleep-log-body">
+      <div class="agent-note"><img src="ip.png" alt=""><p><b>Jovida</b>：把昨晚的入睡时间和醒来时间告诉我，再给我一个主观感受，我会更新你的睡眠趋势。</p></div>
+      <div class="sleep-log-card">
+        <h3>入睡 / 醒来</h3>
+        <p>我会自动算时长，并和你近 7 天的节奏对比。</p>
+        <div class="sleep-time-row">
+          <div><label>入睡时间</label><input type="time" id="sleep-bed" class="time-input" value="23:30"></div>
+          <div><label>醒来时间</label><input type="time" id="sleep-wake" class="time-input" value="07:12"></div>
+        </div>
+      </div>
+      <div class="sleep-log-card">
+        <h3>睡眠质量自评</h3>
+        <p>选一个最贴近昨晚感受的状态。</p>
+        <div class="quality-row" id="sleep-quality">
+          <button onclick="selectQuality(this)" data-v="1"><span class="em">😣</span><span>很差</span></button>
+          <button onclick="selectQuality(this)" data-v="2"><span class="em">😕</span><span>偏差</span></button>
+          <button onclick="selectQuality(this)" data-v="3" class="selected"><span class="em">🙂</span><span>还行</span></button>
+          <button onclick="selectQuality(this)" data-v="4"><span class="em">😴</span><span>不错</span></button>
+          <button onclick="selectQuality(this)" data-v="5"><span class="em">🤩</span><span>极好</span></button>
+        </div>
+      </div>
+      <button class="sleep-submit" onclick="submitSleep()">提交记录</button>
+    </div>
   </section>
 
   <section class="screen jar-screen" id="screen-jar">
@@ -446,6 +552,27 @@ const resourcesByTab = {
   ]
 };
 
+const dashboardByTab = {
+  '减肥':{
+    title:'Daily Calories',
+    records:'13 Records',
+    metrics:[
+      {kind:'cal',label:'Calories eaten',value:'300',blobText:'Keep up'},
+      {kind:'score',label:'Nutrition Score',value:'89',tag:'Great',balls:[['95','g'],['85','t'],['75','b']]}
+    ],
+    cta:{icon:'📷',label:'Log Food',iconCls:'',action:"openLogFood()"}
+  },
+  '睡好觉':{
+    title:'Sleep',
+    records:'昨晚 7h 42m',
+    metrics:[
+      {kind:'sleep-dur',label:'昨晚睡眠',value:'7h 42m',delta:'+18m vs 平均',moon:'🌙'},
+      {kind:'sleep-score',label:'睡眠评分',value:'86',tag:'Sound',stars:4}
+    ],
+    cta:{icon:'🌙',label:'记录睡眠',iconCls:'moon',action:"openLogSleep()"}
+  }
+};
+
 const state = {tab:'For you',expanded:false,done:{},streak:7,starsTotal:18,todayStars:0,jar:[...Array(14).fill('blue'),...Array(4).fill('bronze')]};
 const typeIcon = {'read':'📖','todo':'✓','coding-quiz':'✦','tell':'💬'};
 const typeLabel = {'read':'read','todo':'todo','coding-quiz':'coding quiz','tell':'tell'};
@@ -517,12 +644,13 @@ function renderActionItem(a){
 }
 function renderMainAction(a){
   const tone = tabTone[a.tab] || '';
-  return `<button class="main-action ${state.done[a.id]?'done':''}" onclick="openAction('${a.id}')">
-    <div class="main-kicker"><span>Now · 主 Action</span><span class="reward">${'☀'.repeat(a.stars)}</span></div>
-    <div class="main-title">${a.title}</div>
-    <div class="main-meta"><span class="mini-goal ${tone}">${a.tab}</span><span>${typeLabel[a.type]}</span><span>·</span><span>${a.meta.replace(/^.*? · /,'')}</span></div>
-    <span class="main-cta">${state.done[a.id]?'已完成':'开始'} →</span>
-    <span class="main-hero-icon ${a.type}">${state.done[a.id]?'✓':typeIcon[a.type]}</span>
+  return `<button class="now-action ${state.done[a.id]?'done':''}" onclick="openAction('${a.id}')">
+    <span class="type-icon ${a.type}">${state.done[a.id]?'✓':typeIcon[a.type]}</span>
+    <span class="action-copy">
+      <b>${a.title}</b>
+      <span><i class="mini-goal ${tone}">${a.tab}</i>${typeLabel[a.type]} · ${a.meta.replace(/^.*? · /,'')}</span>
+    </span>
+    <span class="reward">${'☀'.repeat(a.stars)}</span><span class="chev">›</span>
   </button>`;
 }
 function renderResources(){
@@ -530,8 +658,25 @@ function renderResources(){
     document.getElementById('resources').innerHTML = renderForYouFeed();
     return;
   }
-  const keys = [state.tab];
-  document.getElementById('resources').innerHTML = keys.flatMap(k => (resourcesByTab[k]||[]).map(sec=>renderResourceSection(k,sec))).join('');
+  const k = state.tab;
+  document.getElementById('resources').innerHTML = renderDashboard(k) + (resourcesByTab[k]||[]).map(sec=>renderResourceSection(k,sec)).join('');
+}
+function renderDashboard(tab){
+  const d = dashboardByTab[tab]; if(!d) return '';
+  return `<section class="dashboard-section">
+    <div class="dashboard-card-wrap">
+      <div class="dashboard-head"><h3>${d.title}</h3><span class="records">${d.records}<span class="chev">›</span></span></div>
+      <div class="dashboard-grid">${d.metrics.map(renderMetric).join('')}</div>
+      <button class="dashboard-cta" onclick="${d.cta.action}"><span class="ic ${d.cta.iconCls||''}">${d.cta.icon}</span>${d.cta.label}</button>
+    </div>
+  </section>`;
+}
+function renderMetric(m){
+  if(m.kind==='cal') return `<div class="metric-card cal"><div class="label">${m.label}</div><div class="sync">↻</div><div class="value">${m.value}</div><div class="blob"></div><div class="blob-text">${m.blobText}</div></div>`;
+  if(m.kind==='score') return `<div class="metric-card score"><div class="label">${m.label}</div><div class="value">${m.value}<span class="value-tag">${m.tag}</span></div><div class="balls">${m.balls.map(b=>`<span class="ball ${b[1]}">${b[0]}</span>`).join('')}</div></div>`;
+  if(m.kind==='sleep-dur') return `<div class="metric-card sleep-dur"><div class="label">${m.label}</div><div class="value">${m.value}</div><div class="delta">${m.delta}</div><div class="moon">${m.moon}</div></div>`;
+  if(m.kind==='sleep-score') return `<div class="metric-card sleep-score"><div class="label">${m.label}</div><div class="value">${m.value}<span class="value-tag sound">${m.tag}</span></div><div class="stars">${'★'.repeat(m.stars)}${'☆'.repeat(5-m.stars)}</div></div>`;
+  return '';
 }
 function renderForYouFeed(){
   const goals = [
@@ -553,6 +698,7 @@ function renderGoalFeed(goal){
       <h3>${goal.title}</h3>
       <p>${goal.sub}</p>
     </div>
+    ${renderDashboard(goal.tab)}
     ${(resourcesByTab[goal.tab] || []).map(sec => renderResourceSection(goal.tab, sec)).join('')}
   </section>`;
 }
@@ -663,6 +809,16 @@ function renderJar(){
 function showToast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.getElementById('phone').appendChild(t)}t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2100)}
 function flySun(fromEl,n){const r=fromEl.getBoundingClientRect();for(let i=0;i<n;i++){const s=document.createElement('div');s.className='star-fly';s.textContent='☀';s.style.left=r.left+r.width/2+'px';s.style.top=r.top+r.height/2+'px';document.body.appendChild(s);s.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate(130px,-170px) scale(.5)',opacity:.1}],{duration:850,delay:i*90,easing:'cubic-bezier(.2,.8,.2,1)'});setTimeout(()=>s.remove(),1100)}}
 function confetti(){for(let i=0;i<22;i++){const c=document.createElement('div');c.className='confetti';c.style.left='50%';c.style.top='34%';c.style.background=['#83d843','#ff7a45','#7866d8','#f5b53a'][i%4];document.body.appendChild(c);c.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${Math.random()*260-130}px,${Math.random()*260-180}px) rotate(${Math.random()*360}deg)`,opacity:0}],{duration:1200,easing:'ease-out'});setTimeout(()=>c.remove(),1300)}}
+function openLogFood(){showToast('Log Food：对准餐盘拍一张，我帮你估热量和蛋白')}
+function openLogSleep(){go('screen-log-sleep')}
+function selectQuality(btn){btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected')}
+function submitSleep(){
+  const bed=document.getElementById('sleep-bed').value;
+  const wake=document.getElementById('sleep-wake').value;
+  const q=document.querySelector('#sleep-quality button.selected')?.dataset.v||'3';
+  showToast(`已记录：${bed} → ${wake} · 自评 ${q}/5`);
+  setTimeout(()=>go('screen-home'),700);
+}
 renderHome();
 renderJar();
 </script>
